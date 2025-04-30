@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Project Allecc</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        /* Additional styles specific to About page */
+        .page-banner {
+            height: 50vh;
+            background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.7)), url('/api/placeholder/1920/800') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .page-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .page-banner .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .page-banner .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+        }
+        
+        .page-banner .breadcrumb a:hover {
+            color: white;
+        }
+        
+        .about-content {
+            padding: 100px 0;
+        }
+        
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+        
+        .about-section:nth-child(even) {
+            direction: rtl;
+        }
+        
+        .about-section:nth-child(even) .about-text {
+            direction: ltr;
+        }
+        
+        .about-image img {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--gray-color);
+            font-size: 1.1rem;
+        }
+        
+        .team-section {
+            padding: 100px 0;
+            background-color: #f1f1f1;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+        }
+        
+        .team-member {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-image {
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .team-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .team-member:hover .team-image img {
+            transform: scale(1.05);
+        }
+        
+        .team-info {
+            padding: 30px;
+        }
+        
+        .team-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .team-info .position {
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .team-info p {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+        
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .team-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #f1f1f1;
+            border-radius: 50%;
+            color: var(--gray-color);
+            transition: var(--transition);
+        }
+        
+        .team-social a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .awards-section {
+            padding: 100px 0;
+        }
+        
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .award-item {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .award-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .award-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .award-item h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .award-item p {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .about-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .about-section:nth-child(even) {
+                direction: ltr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .awards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .awards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">PROJECT ALLECC</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="games.html">Games</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="page-banner">
+            <div class="banner-content">
+                <h1>ABOUT US</h1>
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>→</span>
+                    <span>About Us</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="about-content">
+            <div class="container">
+                <div class="about-section">
+                    <div class="about-image">
+                        <img src="/api/placeholder/600/400" alt="Project Allecc Studio">
+                    </div>
+                    <div class="about-text">
+                        <h2>OUR STORY</h2>
+                        <p>Project Allecc was founded in 2023 by two passionate gamers with a vision to create innovative gaming experiences that challenge conventions and push boundaries.</p>
+                        <p>What started as a small indie studio in Athens, Greece, has grown into a dedicated team of developers, artists, and designers united by our love for games and commitment to quality.</p>
+                        <p>Our name "Allecc" represents our core values: Artistry, Learning, Legacy, Excellence, Creativity, and Community. These principles guide every project we undertake and every game we create.</p>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <div class="about-image">
+                        <img src="/api/placeholder/600/400" alt="Project Allecc Mission">
+                    </div>
+                    <div class="about-text">
+                        <h2>OUR MISSION</h2>
+                        <p>We believe games are more than just entertainment—they're powerful mediums for storytelling, connection, and expression. Our mission is to create memorable gaming experiences that resonate with players on both emotional and intellectual levels.</p>
+                        <p>We strive to balance innovative gameplay mechanics with compelling narratives, ensuring every title we release offers something unique to the gaming landscape.</p>
+                        <p>Community involvement is central to our development process. We actively engage with players throughout each stage of creation, from concept to post-launch support, ensuring our games evolve with the community's feedback.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>MEET OUR TEAM</h2>
+                    <div class="section-separator"></div>
+                </div>
+                
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-image">
+                            <img src="/api/placeholder/500/500" alt="Ioannis Papadopoulos">
+                        </div>
+                        <div class="team-info">
+                            <h3>Ioannis Papadopoulos</h3>
+                            <span class="position">CEO & Creative Director</span>
+                            <p>With over 10 years of experience in game design, Ioannis leads our creative vision and studio operations. His passion for innovative gameplay mechanics and compelling narratives drives our studio's direction.</p>
+                            <div class="team-social">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="team-image">
+                            <img src="/api/placeholder/500/500" alt="Vasilios Chiliaridis">
+                        </div>
+                        <div class="team-info">
+                            <h3>Vasilios Chiliaridis</h3>
+                            <span class="position">CTO & Lead Developer</span>
+                            <p>Vasilios brings technical excellence to every project as our CTO. His expertise in game engine technology and optimization ensures our games run beautifully across all platforms while pushing visual boundaries.</p>
+                            <div class="team-social">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="awards-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>AWARDS & RECOGNITION</h2>
+                    <div class="section-separator"></div>
+                </div>
+                
+                <div class="awards-grid">
+                    <div class="award-item">
+                        <div class="award-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3>Best Indie Game</h3>
+                        <p>Athens Games Festival 2024</p>
+                    </div>
+                    
+                    <div class="award-item">
+                        <div class="award-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h3>Innovation Award</h3>
+                        <p>European Indie Showcase 2024</p>
+                    </div>
+                    
+                    <div class="award-item">
+                        <div class="award-icon">
+                            <i class="fas fa-thumbs-up"></i>
+                        </div>
+                        <h3>Player's Choice</h3>
+                        <p>Indie Dev Summit 2023</p>
+                    </div>
+                    
+                    <div class="award-item">
+                        <div class="award-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Rising Star Studio</h3>
+                        <p>Game Developer Conference 2024</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>PROJECT ALLECC</h2>
+                    <p>Crafting unforgettable gaming experiences since 2023</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>NAVIGATION</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="games.html">Games</a></li>
+                            <li><a href="documentation.html">Documentation</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>GAMES</h3>
+                        <ul>
+                            <li><a href="lizards-vs-humans.html">Lizards VS Humans</a></li>
+                            <li><a href="#">Coming Soon</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>SOCIAL</h3>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-discord"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Project Allecc. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games | Project Allecc</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        /* Additional styles for games page */
+        .page-banner {
+            height: 50vh;
+            background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.7)), url('/api/placeholder/1920/800') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .page-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .page-banner .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .page-banner .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+        }
+        
+        .page-banner .breadcrumb a:hover {
+            color: white;
+        }
+        
+        .games-container {
+            padding: 100px 0;
+        }
+        
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .filter-categories {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-button {
+            padding: 10px 20px;
+            background-color: white;
+            border: 2px solid #eee;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .filter-button:hover,
+        .filter-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .search-input {
+            display: flex;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 2px solid #eee;
+        }
+        
+        .search-input input {
+            border: none;
+            padding: 10px 20px;
+            width: 250px;
+            outline: none;
+        }
+        
+        .search-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .game-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .game-card:hover .game-image img {
+            transform: scale(1.05);
+        }
+        
+        .game-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .badge-released {
+            background-color: var(--secondary-color);
+        }
+        
+        .badge-upcoming {
+            background-color: var(--tertiary-color);
+        }
+        
+        .badge-early-access {
+            background-color: #ffc107;
+        }
+        
+        .game-info {
+            padding: 25px;
+        }
+        
+        .game-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .game-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .game-tags span {
+            padding: 4px 12px;
+            background-color: #f1f1f1;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--gray-color);
+        }
+        
+        .game-info p {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+        
+        .page-navigation {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .page-navigation .page-link {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 5px;
+            margin: 0 5px;
+            color: var(--gray-color);
+            transition: var(--transition);
+            border: 1px solid #eee;
+        }
+        
+        .page-navigation .page-link:hover,
+        .page-navigation .page-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .upcoming-section {
+            padding: 100px 0;
+            background-color: #f1f1f1;
+        }
+        
+        .section-divider {
+            background: url('/api/placeholder/1920/300') no-repeat center center/cover;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 50px 0;
+            position: relative;
+        }
+        
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), rgba(48, 207, 208, 0.7));
+            opacity: 0.8;
+        }
+        
+        .section-divider h2 {
+            color: white;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+            
+            .search-input input {
+                width: 100%;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">PROJECT ALLECC</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="games.html" class="active">Games</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="page-banner">
+            <div class="banner-content">
+                <h1>OUR GAMES</h1>
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>→</span>
+                    <span>Games</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="games-container">
+            <div class="container">
+                <div class="filter-bar">
+                    <div class="filter-categories">
+                        <button class="filter-button active">All</button>
+                        <button class="filter-button">Released</button>
+                        <button class="filter-button">Early Access</button>
+                        <button class="filter-button">Upcoming</button>
+                        <button class="filter-button">FPS</button>
+                        <button class="filter-button">TPS</button>
+                        <button class="filter-button">Racing</button>
+                        <button class="filter-button">RPG</button>
+                    </div>
+                    <div class="search-input">
+                        <input type="text" placeholder="Search games...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="/api/placeholder/400/250" alt="Lizards VS Humans">
+                            <div class="game-badge badge-released">Released</div>
+                        </div>
+                        <div class="game-info">
+                            <h3>Lizards VS Humans</h3>
+                            <div class="game-tags">
+                                <span>FPS</span>
+                                <span>TPS</span>
+                                <span>Sci-Fi</span>
+                                <span>Multiplayer</span>
+                            </div>
+                            <p>An intense multiplayer shooter where two species battle for dominance. Choose your side in this epic conflict between advanced reptilians and resourceful humans.</p>
+                            <a href="lizards-vs-humans.html" class="btn btn-primary">Learn More</a>
+                            <div class="game-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>March 2024</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>2-32 Players</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="/api/placeholder/400/250" alt="Quantum Drift">
+                            <div class="game-badge badge-upcoming">Upcoming</div>
+                        </div>
+                        <div class="game-info">
+                            <h3>Quantum Drift</h3>
+                            <div class="game-tags">
+                                <span>Racing</span>
+                                <span>Sci-Fi</span>
+                                <span>Time Manipulation</span>
+                            </div>
+                            <p>A high-octane racing game set in a cyberpunk future where drivers can manipulate time to gain advantage. Master temporal mechanics to become the ultimate racer.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                            <div class="game-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Q1 2026</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>1-16 Players</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Wishlist</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="/api/placeholder/400/250" alt="Neon Shadows">
+                            <div class="game-badge badge-upcoming">Upcoming</div>
+                        </div>
+                        <div class="game-info">
+                            <h3>Neon Shadows</h3>
+                            <div class="game-tags">
+                                <span>Stealth</span>
+                                <span>RPG</span>
+                                <span>Cyberpunk</span>
+                            </div>
+                            <p>A stealth-based RPG where you play as a digital ghost infiltrating corporate networks. Hack, sneak, and sabotage your way through a dystopian future.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                            <div class="game-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Q4 2025</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-user"></i>
+                                    <span>Single Player</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Wishlist</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="/api/placeholder/400/250" alt="Echoes of Atlantis">
+                            <div class="game-badge badge-early-access">Early Access</div>
+                        </div>
+                        <div class="game-info">
+                            <h3>Echoes of Atlantis</h3>
+                            <div class="game-tags">
+                                <span>Adventure</span>
+                                <span>Exploration</span>
+                                <span>Underwater</span>
+                            </div>
+                            <p>An underwater adventure game exploring the mysteries of a lost civilization. Discover ancient technologies, solve puzzles, and uncover the truth of Atlantis.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                            <div class="game-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Q2 2025 (EA)</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-user"></i>
+                                    <span>Single Player</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Wishlist</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-navigation">
+                    <a href="#" class="page-link"><i class="fas fa-angle-left"></i></a>
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">2</a>
+                    <a href="#" class="page-link">3</a>
+                    <a href="#" class="page-link"><i class="fas fa-angle-right"></i></a>
+                </div>
+            </div>
+        </section>
+        
+        <div class="section-divider">
+            <h2>GAME DEVELOPMENT ROADMAP</h2>
+        </div>
+        
+        <section class="upcoming-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>UPCOMING RELEASES</h2>
+                    <div class="section-separator"></div>
+                    <p style="text-align: center; max-width: 700px; margin: 20px auto; color: var(--gray-color);">Here's a glimpse into our development pipeline. These titles are in various stages of production and subject to change as we refine our creative vision.</p>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Lizards VS Humans: Season 2</h3>
+                            <div class="timeline-date">Q3 2025</div>
+                            <p>The second season brings new maps, weapons, character classes, and a revolutionary progression system that evolves based on your playstyle.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Echoes of Atlantis</h3>
+                            <div class="timeline-date">Q2 2025 (Early Access)</div>
+                            <p>Dive into the depths to explore a mysterious underwater civilization with ancient technology and dark secrets.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Neon Shadows</h3>
+                            <div class="timeline-date">Q4 2025</div>
+                            <p>Infiltrate corporate networks as a digital ghost in this stealth-based RPG set in a cyberpunk future.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Quantum Drift</h3>
+                            <div class="timeline-date">Q1 2026</div>
+                            <p>Race through a cyberpunk cityscape with the ability to manipulate time to gain the advantage over your competitors.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Untitled Fantasy Project</h3>
+                            <div class="timeline-date">2026-2027</div>
+                            <p>A secret project that will take players to a realm where magic and technology coexist in delicate balance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>PROJECT ALLECC</h2>
+                    <p>Crafting unforgettable gaming experiences since 2023</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>NAVIGATION</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="games.html">Games</a></li>
+                            <li><a href="documentation.html">Documentation</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>GAMES</h3>
+                        <ul>
+                            <li><a href="lizards-vs-humans.html">Lizards VS Humans</a></li>
+                            <li><a href="#">Coming Soon</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>SOCIAL</h3>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-discord"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Project Allecc. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <style>
+        /* Timeline styles */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            padding: 30px 0;
+            position: relative;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 5px solid var(--primary-color);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        
+        .timeline-content {
+            position: relative;
+            width: calc(50% - 40px);
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            left: calc(50% + 40px);
+        }
+        
+        .timeline-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .timeline-date {
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-content p {
+            color: var(--gray-color);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item::after {
+                left: 20px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 80px);
+                left: 60px !important;
+            }
+        }
+    </style>
+</body>
+</html>
